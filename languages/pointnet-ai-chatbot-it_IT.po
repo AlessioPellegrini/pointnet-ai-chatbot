@@ -1,0 +1,528 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PointNet AI Chatbot 1.8.4\n"
+"Report-Msgid-Bugs-To: https://www.pointnet.it/\n"
+"POT-Creation-Date: 2026-11-26 12:00+0100\n"
+"PO-Revision-Date: 2026-11-26 12:00+0100\n"
+"Last-Translator: PointNet <info@pointnet.it>\n"
+"Language-Team: Italian <it@li.org>\n"
+"Language: it_IT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.5\n"
+"X-Domain: pointnet-ai-chatbot\n"
+
+#: pointnet-ai-chatbot.php:xx
+msgid "Settings"
+msgstr "Impostazioni"
+
+#: pointnet-ai-chatbot.php:xx
+msgid "Visit plugin site"
+msgstr "Visita il sito del plugin"
+
+#: pointnet-ai-chatbot.php:xx
+msgid "Support"
+msgstr "Supporto"
+
+#: admin/settings-page.php
+msgid "PointNet AI Chatbot Settings"
+msgstr "Impostazioni PointNet AI Chatbot"
+
+msgid "PointNet AI Chatbot"
+msgstr "PointNet AI Chatbot"
+
+msgid "Stop Words & Analysis"
+msgstr "Parole da Ignorare & Analisi"
+
+msgid "Chat History Logs"
+msgstr "Registri Cronologia Chat"
+
+# Sections
+msgid "🤖 AI Provider & API Settings"
+msgstr "🤖 Provider AI & Impostazioni API"
+
+msgid "🧠 Knowledge Base & RAG Tuning"
+msgstr "🧠 Base di Conoscenza & Ottimizzazione RAG"
+
+msgid "🎨 Appearance & UI"
+msgstr "🎨 Aspetto & Interfaccia"
+
+msgid "🛡️ Security & Rate Limits"
+msgstr "🛡️ Sicurezza & Limiti di Richieste"
+
+msgid "⚙️ Advanced Options"
+msgstr "⚙️ Opzioni Avanzate"
+
+# Provider section fields
+msgid "AI Provider"
+msgstr "Provider AI"
+
+msgid "API Key (OpenAI)"
+msgstr "API Key (OpenAI)"
+
+msgid "OpenAI Model"
+msgstr "Modello OpenAI"
+
+msgid "API Key (Google Gemini)"
+msgstr "API Key (Google Gemini)"
+
+msgid "Gemini Model"
+msgstr "Modello Gemini"
+
+msgid "API Key (OpenRouter)"
+msgstr "API Key (OpenRouter)"
+
+msgid "OpenRouter Priority Models"
+msgstr "Modelli Prioritari OpenRouter"
+
+# Knowledge section fields
+msgid "Global Site Knowledge"
+msgstr "Conoscenza Globale del Sito"
+
+msgid "System Prompt"
+msgstr "Prompt di Sistema"
+
+msgid "Contact Page URL"
+msgstr "URL Pagina Contatti"
+
+msgid "RAG Search Depth"
+msgstr "Profondità Ricerca RAG"
+
+msgid "Content Truncation Mode"
+msgstr "Modalità Troncamento Contenuto"
+
+msgid "Max Characters per Post (Uniform)"
+msgstr "Caratteri Massimi per Post (Uniforme)"
+
+msgid "Adaptive Limits (Top, Mid, Rest)"
+msgstr "Limiti Adattivi (Top, Mid, Rest)"
+
+msgid "🤖 Critical AI Behavior Rules"
+msgstr "🤖 Regole Critiche di Comportamento AI"
+
+# Truncation mode options
+msgid "Uniform – same limit for all posts"
+msgstr "Uniforme – stesso limite per tutti i post"
+
+msgid "Adaptive – more chars for top results (recommended)"
+msgstr "Adattivo – più caratteri per i risultati migliori (consigliato)"
+
+# Truncation descriptions
+msgid "all posts are truncated to the same character limit (set below)."
+msgstr "tutti i post vengono troncati allo stesso limite di caratteri (impostato sotto)."
+
+msgid "top 3 results get more chars (default: 4000), positions 4-7 get medium (default: 3000), the rest get less (default: 1500). Configure custom limits below. Use this to capture more content from the most relevant pages while saving tokens on the rest."
+msgstr "i primi 3 risultati ottengono più caratteri (default: 4000), le posizioni 4-7 ricevono medi (default: 3000), il resto riceve meno (default: 1500). Configura i limiti personalizzati sotto. Usalo per catturare più contenuti dalle pagine più rilevanti risparmiando token sulle altre."
+
+msgid "Warning: higher limits = more characters sent to the AI = higher token consumption and API costs. Adjust carefully."
+msgstr "Attenzione: limiti più alti = più caratteri inviati all'AI = maggior consumo di token e costi API. Regola con cura."
+
+msgid "Maximum number of characters per post when using Uniform mode. Default: 1500. Values below 500 are not recommended (too little context)."
+msgstr "Numero massimo di caratteri per post in modalità Uniforme. Default: 1500. Valori inferiori a 500 non sono consigliati (troppo poco contesto)."
+
+msgid "Higher values increase token consumption and API costs."
+msgstr "Valori più alti aumentano il consumo di token e i costi API."
+
+msgid "Three comma-separated numbers: positions 1-3, positions 4-7, rest (8+). Default: 4000,3000,1500. Minimum 500, maximum 20000 each."
+msgstr "Tre numeri separati da virgola: posizioni 1-3, posizioni 4-7, resto (8+). Default: 4000,3000,1500. Minimo 500, massimo 20000 ciascuno."
+
+# Critical rules description
+msgid "These rules are sent before the System Prompt with every request. They define mandatory AI behavior — language, link format, data honesty, etc. Leave empty to use built-in defaults. Modify with caution: keep the numbering consistent (1..6)."
+msgstr "Queste regole vengono inviate prima del System Prompt a ogni richiesta. Definiscono il comportamento obbligatorio dell'AI — lingua, formato link, onestà dei dati, ecc. Lascia vuoto per usare i predefiniti. Modifica con cautela: mantieni la numerazione coerente (1..6)."
+
+msgid "Important:"
+msgstr "Importante:"
+
+msgid "These rules are visible here so you know exactly what is sent to the AI. Avoid duplicating them in the System Prompt above to prevent unnecessary token waste."
+msgstr "Queste regole sono visibili qui in modo che tu sappia esattamente cosa viene inviato all'AI. Evita di duplicarle nel System Prompt sopra per prevenire spreco inutile di token."
+
+# Knowledge description addition about order
+msgid "Also note that Critical AI Behavior Rules are sent first, followed by the System Prompt, Contacts, and finally Global Knowledge with the extracted site content."
+msgstr "Nota anche che le Regole Critiche di Comportamento AI vengono inviate per prime, seguite dal Prompt di Sistema, Contatti e infine dalla Conoscenza Globale con i contenuti del sito estratti."
+
+# Appearance fields
+msgid "Welcome Message"
+msgstr "Messaggio di Benvenuto"
+
+msgid "Primary Color"
+msgstr "Colore Primario"
+
+msgid "Background Opacity (%)"
+msgstr "Opacità Sfondo (%)"
+
+# Security fields
+msgid "Messages per Minute (per IP)"
+msgstr "Messaggi al Minuto (per IP)"
+
+msgid "Daily Messages (per IP)"
+msgstr "Messaggi Giornalieri (per IP)"
+
+msgid "Daily Global Messages"
+msgstr "Messaggi Globali Giornalieri"
+
+# Advanced fields
+msgid "Delete Data on Uninstall"
+msgstr "Cancella Dati alla Disinstallazione"
+
+# Descriptions
+msgid "Configure your chosen AI Provider and enter the necessary API keys."
+msgstr "Configura il tuo provider AI e inserisci le chiavi API necessarie."
+
+msgid "Compliance Notice: By using this plugin, user prompts are securely transmitted to third-party AI APIs. Please review the privacy policies of your chosen provider:"
+msgstr "Nota di conformità: Utilizzando questo plugin, i prompt degli utenti vengono trasmessi in modo sicuro a API AI di terze parti. Ti invitiamo a consultare le privacy policy del provider scelto:"
+
+msgid "Train your chatbot. Set base knowledge, tone of voice, and fine-tune the RAG search depth."
+msgstr "Addestra il tuo chatbot. Imposta la conoscenza di base, il tono di voce e regola la profondità di ricerca RAG."
+
+msgid "💡 Difference between System Prompt and Global Knowledge:"
+msgstr "💡 Differenza tra System Prompt e Conoscenza Globale:"
+
+msgid "instructions on \"how\" to respond: tone, language, rules of behaviour. Here you tell the AI what to do."
+msgstr "istruzioni su \"come\" rispondere: tono, lingua, regole di comportamento. Qui dici all'AI cosa fare."
+
+msgid "static company data \"what\" to know: who you are, contacts, opening hours. Here you provide facts that are always true."
+msgstr "dati aziendali statici \"cosa\" sapere: chi sei, contatti, orari. Qui fornisci fatti sempre veri."
+
+msgid "Both are sent with every request, but keeping them separate simplifies management and editing."
+msgstr "Entrambi vengono inviati a ogni richiesta, ma tenerli separati semplifica la gestione e la modifica."
+
+msgid "Customize the visual style of your chatbot to match your brand."
+msgstr "Personalizza lo stile visivo del tuo chatbot per adattarlo al tuo brand."
+
+msgid "Protect your API budget by configuring multi-layer rate limits against spam and bot networks."
+msgstr "Proteggi il tuo budget API configurando limiti di richieste multi-livello contro spam e bot."
+
+msgid "Database and uninstallation preferences."
+msgstr "Preferenze database e disinstallazione."
+
+# Provider specific strings
+msgid "Saved key ending in "
+msgstr "Chiave salvata che termina con "
+
+msgid ". Type to change."
+msgstr ". Scrivi per cambiare."
+
+msgid "Fetch Models"
+msgstr "Recupera Modelli"
+
+msgid "Click \"Fetch Models\" to retrieve the list of available text models directly from OpenAI. Recommended: gpt-4o-mini."
+msgstr "Clicca \"Recupera Modelli\" per ottenere l'elenco dei modelli di testo disponibili direttamente da OpenAI. Consigliato: gpt-4o-mini."
+
+msgid "Fetching available models from OpenAI..."
+msgstr "Recupero modelli disponibili da OpenAI..."
+
+msgid "Models updated successfully! Select one and click Save Settings."
+msgstr "Modelli aggiornati con successo! Selezionane uno e clicca Salva Impostazioni."
+
+msgid "Unknown error."
+msgstr "Errore sconosciuto."
+
+msgid "Server connection error. Please try again."
+msgstr "Errore di connessione al server. Riprova."
+
+msgid "Security token expired. Please reload the page."
+msgstr "Token di sicurezza scaduto. Ricarica la pagina."
+
+msgid "Unauthorized action."
+msgstr "Azione non autorizzata."
+
+msgid "OpenAI API Key is missing. Please enter it above."
+msgstr "Chiave API OpenAI mancante. Inseriscila qui sopra."
+
+msgid "Network error communicating with OpenAI API: "
+msgstr "Errore di rete comunicando con le API OpenAI: "
+
+msgid "HTTP Error "
+msgstr "Errore HTTP "
+
+msgid "No chat/text generation models found for this key."
+msgstr "Nessun modello di chat/generazione testo trovato per questa chiave."
+
+msgid "Click \"Fetch Models\" to retrieve the list of available AI models directly from Google. Recommended: gemini-3.5-flash."
+msgstr "Clicca \"Recupera Modelli\" per ottenere l'elenco dei modelli AI disponibili direttamente da Google. Consigliato: gemini-3.5-flash."
+
+msgid "Fetching available models from Google..."
+msgstr "Recupero modelli disponibili da Google..."
+
+msgid "Google Gemini API Key is missing. Please enter it above."
+msgstr "Chiave API Google Gemini mancante. Inseriscila qui sopra."
+
+msgid "Network error communicating with Google API: "
+msgstr "Errore di rete comunicando con le API Google: "
+
+msgid "The API Key is invalid. Ensure it is copied correctly without trailing spaces."
+msgstr "La chiave API non è valida. Assicurati di averla copiata correttamente senza spazi finali."
+
+msgid "No text generation models found for this key."
+msgstr "Nessun modello di generazione testo trovato per questa chiave."
+
+msgid "Enter model slugs separated by commas. The plugin will try them in order. If all fail, the automatic Joker (openrouter/free) will trigger, filtered by the Quality Control Bouncer."
+msgstr "Inserisci gli slug dei modelli separati da virgole. Il plugin li proverà in ordine. Se tutti falliscono, scatterà il Joker automatico (openrouter/free), filtrato dal Bouncer di Controllo Qualità."
+
+# Welcome message
+msgid "Hello! How can I help you today?"
+msgstr "Ciao! Come posso aiutarti oggi?"
+
+msgid "Enter a custom initial greeting. Leave blank for default."
+msgstr "Inserisci un saluto iniziale personalizzato. Lascia vuoto per il predefinito."
+
+msgid "Adjust the transparency of the chatbot button and header."
+msgstr "Regola la trasparenza del pulsante e dell'intestazione del chatbot."
+
+msgid "Maximum number of pages/categories the AI fetches per question. Default: 12. Higher = broader context but slower response times."
+msgstr "Numero massimo di pagine/categorie che l'AI recupera per domanda. Predefinito: 12. Più alto = contesto più ampio ma tempi di risposta più lenti."
+
+msgid "Enter the exact URL of your contact page. The bot will automatically use this link to redirect clients."
+msgstr "Inserisci l'URL esatto della tua pagina contatti. Il bot userà automaticamente questo link per reindirizzare i clienti."
+
+msgid "Enter here the general information that the assistant must always know, regardless of the site pages."
+msgstr "Inserisci qui le informazioni generali che l'assistente deve sempre conoscere, indipendentemente dalle pagine del sito."
+
+msgid "Example:"
+msgstr "Esempio:"
+
+msgid "We are a web agency based in Lucca. Tel: +39 0583 123456. Open Mon-Fri 9-18. We offer SEO, hosting and WordPress development services."
+msgstr "Siamo un'agenzia web con sede a Lucca. Tel: +39 0583 123456. Aperti lun-ven 9-18. Offriamo servizi di SEO, hosting e sviluppo WordPress."
+
+msgid "These data are added to the context of every conversation."
+msgstr "Questi dati vengono aggiunti al contesto di ogni conversazione."
+
+msgid "Define the assistant's behaviour and tone. These instructions are followed in every response."
+msgstr "Definisci il comportamento e il tono dell'assistente. Queste istruzioni vengono seguite in ogni risposta."
+
+msgid "You are the website virtual assistant. Reply in Italian, politely and concisely. Never invent information. Use links in the format [Text](URL)."
+msgstr "Sei l'assistente virtuale del sito. Rispondi in italiano, in modo cortese e conciso. Non inventare mai informazioni. Usa link in formato [Testo](URL)."
+
+msgid "The System Prompt is sent as a system instruction to the AI with every request."
+msgstr "Il System Prompt viene inviato come istruzione di sistema all'AI a ogni richiesta."
+
+msgid "Delete all keys, settings, and logs from database upon plugin deletion."
+msgstr "Cancella tutte le chiavi, impostazioni e log dal database alla cancellazione del plugin."
+
+# Analyzer tab
+msgid "Manual Stop Words"
+msgstr "Parole da Ignorare Manuali"
+
+msgid "Enter words that the bot should ignore during search. The Analyzer below helps you identify redundant words (Flood Words) to add."
+msgstr "Inserisci le parole che il bot deve ignorare durante la ricerca. L'Analizzatore qui sotto ti aiuta a individuare le parole ridondanti (Flood Words) da aggiungere."
+
+msgid "e.g. cocktail, recipe, info"
+msgstr "es. cocktail, ricetta, info"
+
+msgid "Save Words"
+msgstr "Salva Parole"
+
+msgid "Flood Words Analyzer"
+msgstr "Analizzatore di Parole Ridondanti"
+
+msgid "Discover domain-specific words that appear in too many pages (Flood Words). The analyzer calculates Coverage and Total Frequency (TF) from the latest 500 public articles. Words with high coverage reduce RAG search precision and should be added to your Stop Words."
+msgstr "Scopri le parole specifiche del tuo dominio che compaiono in troppe pagine (Flood Words). L'analizzatore calcola la Copertura e la Frequenza Totale (TF) dagli ultimi 500 articoli pubblici. Le parole con alta copertura riducono la precisione della ricerca RAG e dovrebbero essere aggiunte alle tue Parole da Ignorare."
+
+msgid "Scan Site and Analyze Redundant Words"
+msgstr "Scansiona Sito e Analizza Parole Ridondanti"
+
+msgid "Word"
+msgstr "Parola"
+
+msgid "Frequency (TF)"
+msgstr "Frequenza (TF)"
+
+msgid "Appears in"
+msgstr "Appare in"
+
+msgid "Coverage"
+msgstr "Copertura"
+
+msgid "Suggestion"
+msgstr "Suggerimento"
+
+msgid "Action"
+msgstr "Azione"
+
+msgid "Remove"
+msgstr "Rimuovi"
+
+msgid "Add to Stop Words"
+msgstr "Aggiungi a Parole da Ignorare"
+
+msgid "Possible redundant word"
+msgstr "Possibile parola ridondante"
+
+msgid "Very redundant word"
+msgstr "Parola molto ridondante"
+
+msgid "Likely redundant word"
+msgstr "Probabile parola ridondante"
+
+msgid "Manual word"
+msgstr "Parola manuale"
+
+msgid "Saved!"
+msgstr "Salvato!"
+
+msgid "Error"
+msgstr "Errore"
+
+msgid "Error saving words."
+msgstr "Errore nel salvare le parole."
+
+msgid "Connection error."
+msgstr "Errore di connessione."
+
+msgid "AJAX connection error. Please try again."
+msgstr "Errore di connessione AJAX. Riprova."
+
+msgid "No public content found to analyze."
+msgstr "Nessun contenuto pubblico trovato da analizzare."
+
+# Logs tab
+msgid "Monitor and download visitor chat interactions to optimize your prompts and knowledge base. Now includes token usage data."
+msgstr "Monitora e scarica le interazioni chat dei visitatori per ottimizzare i tuoi prompt e la knowledge base. Ora include i dati di utilizzo dei token."
+
+msgid "Chat history cleared successfully."
+msgstr "Cronologia chat cancellata con successo."
+
+msgid "Download Logs (CSV)"
+msgstr "Scarica Log (CSV)"
+
+msgid "Clear History Logs"
+msgstr "Cancella Cronologia Log"
+
+msgid "No logs available"
+msgstr "Nessun log disponibile"
+
+msgid "Date & Time"
+msgstr "Data & Ora"
+
+msgid "Model Details"
+msgstr "Dettagli Modello"
+
+msgid "Time"
+msgstr "Tempo"
+
+msgid "Tokens In"
+msgstr "Token In"
+
+msgid "Tokens Out"
+msgstr "Token Out"
+
+msgid "Total Tokens"
+msgstr "Token Totali"
+
+msgid "User Question"
+msgstr "Domanda Utente"
+
+msgid "Model Response"
+msgstr "Risposta Modello"
+
+msgid "No recorded chat conversations."
+msgstr "Nessuna conversazione registrata."
+
+msgid "Insufficient permissions."
+msgstr "Permessi insufficienti."
+
+msgid "Are you sure you want to clear all logs?"
+msgstr "Sei sicuro di voler cancellare tutti i log?"
+
+# CSV headers (same as table headers, already listed)
+msgid "Specific Model"
+msgstr "Modello Specifico"
+
+msgid "Time (s)"
+msgstr "Tempo (s)"
+
+msgid "Response"
+msgstr "Risposta"
+
+# Frontend (chat-handler.php)
+msgid "The bot is writing..."
+msgstr "Il bot sta scrivendo..."
+
+msgid "Ask a question..."
+msgstr "Fai una domanda..."
+
+msgid "A connection error occurred with the server."
+msgstr "Si è verificato un errore di connessione con il server."
+
+msgid "Virtual Assistant"
+msgstr "Assistente Virtuale"
+
+msgid "Send"
+msgstr "Invia"
+
+msgid "Chat"
+msgstr "Chat"
+
+# Rate limiting & errors (chat-handler.php)
+msgid "Message is empty."
+msgstr "Il messaggio è vuoto."
+
+msgid "Too many requests in a minute. Please wait."
+msgstr "Troppe richieste in un minuto. Attendi."
+
+msgid "Daily message limit reached for your IP."
+msgstr "Limite giornaliero di messaggi raggiunto per il tuo IP."
+
+msgid "Global daily message limit reached. Try again tomorrow."
+msgstr "Limite globale giornaliero di messaggi raggiunto. Riprova domani."
+
+# API error messages
+msgid "OpenRouter API key is missing."
+msgstr "Chiave API OpenRouter mancante."
+
+msgid "Error: Google Gemini API key is missing."
+msgstr "Errore: Chiave API Google Gemini mancante."
+
+msgid "Timeout Error: Google servers took too long to process the request. Please try again."
+msgstr "Errore di Timeout: I server di Google hanno impiegato troppo tempo. Riprova."
+
+msgid "GOOGLE KEY ERROR: You inserted an invalid API string."
+msgstr "ERRORE CHIAVE GOOGLE: Hai inserito una stringa API non valida."
+
+msgid "Error: OpenAI API key is missing."
+msgstr "Errore: Chiave API OpenAI mancante."
+
+msgid "OpenAI Timeout Error."
+msgstr "Errore Timeout OpenAI."
+
+msgid "OpenAI Unknown Error"
+msgstr "Errore OpenAI Sconosciuto"
+
+msgid "All models failed. Path: "
+msgstr "Tutti i modelli hanno fallito. Percorso: "
+
+msgid "System Error: Invalid UTF-8."
+msgstr "Errore di Sistema: UTF-8 non valido."
+
+msgid "Timeout: The server took too long."
+msgstr "Timeout: Il server ha impiegato troppo tempo."
+
+msgid "Unknown Error"
+msgstr "Errore Sconosciuto"
+
+# Critical Rules v1.8.2
+msgid "Enable manual editing"
+msgstr "Abilita modifica manuale"
+
+msgid "Only modify these rules if you know what you are doing. Incorrect changes can break the chatbot behavior (language, links, data honesty)."
+msgstr "Modifica queste regole solo se sai cosa stai facendo. Modifiche errate possono compromettere il comportamento del chatbot (lingua, link, onestà dei dati)."
+
+msgid "These rules are sent before the System Prompt with every request. They define mandatory AI behavior — language, link format, data honesty, etc. Use built-in defaults when editing is disabled."
+msgstr "Queste regole vengono inviate prima del System Prompt a ogni richiesta. Definiscono il comportamento obbligatorio dell'AI — lingua, formato link, onestà dei dati, ecc. Usa i valori predefiniti quando la modifica è disabilitata."
+
+# Save Settings button
+msgid "Save Settings"
+msgstr "Salva Impostazioni"
+
+# Frontend Disclaimer
+msgid "By sending a message, you agree to our"
+msgstr "Inviando un messaggio accetti la nostra"
+
+msgid "Privacy Policy"
+msgstr "Privacy Policy"
+
+msgid "AI may make mistakes; do not share sensitive data."
+msgstr "L'IA può commettere errori; non inserire dati sensibili."
+
