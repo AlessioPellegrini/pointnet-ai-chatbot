@@ -24,13 +24,16 @@ class PointNet_AI_Chatbot_Frontend {
         $css_ver = file_exists( PN_AI_CHATBOT_DIR . 'frontend/chat.css' ) ? filemtime( PN_AI_CHATBOT_DIR . 'frontend/chat.css' ) : PN_AI_CHATBOT_VERSION;
         $js_ver  = file_exists( PN_AI_CHATBOT_DIR . 'frontend/chat.js' ) ? filemtime( PN_AI_CHATBOT_DIR . 'frontend/chat.js' ) : PN_AI_CHATBOT_VERSION;
         wp_enqueue_style( 'pn-ai-chatbot-css', PN_AI_CHATBOT_URL . 'frontend/chat.css', array(), $css_ver );
-        wp_enqueue_script( 'pn-ai-chatbot-js', PN_AI_CHATBOT_URL . 'frontend/chat.js', array('jquery'), $js_ver, true );
+        wp_enqueue_script( 'pn-ai-chatbot-js', PN_AI_CHATBOT_URL . 'frontend/chat.js', array( 'jquery' ), $js_ver, true );
+        $options     = get_option( 'pn_ai_chatbot_settings' );
+        $contact_url = is_array( $options ) && ! empty( $options['contact_url'] ) ? $options['contact_url'] : '/contact/';
         wp_localize_script( 'pn-ai-chatbot-js', 'pnAiChatbotData', array(
             'ajax_url'     => admin_url( 'admin-ajax.php' ),
             'nonce'        => wp_create_nonce( 'pn_ai_chatbot_chat_nonce' ),
             'writing'      => __( 'The bot is writing...', 'pointnet-ai-chatbot' ),
             'ask_question' => __( 'Ask a question...', 'pointnet-ai-chatbot' ),
-            'conn_error'   => __( 'A connection error occurred with the server.', 'pointnet-ai-chatbot' )
+            'conn_error'   => __( 'A connection error occurred with the server.', 'pointnet-ai-chatbot' ),
+            'contact_url'  => esc_url( $contact_url ),
         ));
     }
 
@@ -107,7 +110,7 @@ class PointNet_AI_Chatbot_Frontend {
 
     private function get_critical_rules(): string {
         $options = get_option( 'pn_ai_chatbot_settings' );
-        $default = "\n\nCRITICAL RULES:\n1. Respond in User Language.\n2. Never show internal reasoning.\n3. Links: [Title](URL).\n4. ANTI-AMNESIA & CONVERSATION FOCUS: If the user asks a follow-up question with an implicit subject or pronoun (e.g. 'which is the strongest?', 'how do I make it?', 'how much?'), they are referring exclusively to the specific entity/topic discussed in the IMMEDIATE PREVIOUS message. You MUST analyze only the data of that previous entity from the Chat History, and completely ignore other unrelated search results in the SITE DATA.\n5. PARTIAL DATA WARNING: The SITE DATA contains page EXCERPTS (first N characters), NOT full content. If specific information (e.g. certifications, details, skills) is not found in the excerpt, do NOT assume or claim it is absent from the page. Instead respond: 'The excerpt available does not mention [topic]. See the full page: [Page Title](URL).' NEVER make definitive negative statements like 'the page does not contain', 'does not list', or 'is not indicated'.\n6. LINK INTEGRITY: Only use URLs that appear verbatim in the provided SITE DATA. NEVER guess, generate, or construct URLs for external websites based on institution names, file names, or any other contextual clues. If the SITE DATA contains text that resembles a filename or reference but does not contain a full clickable URL, the URL is absent — do NOT fabricate one. NEVER use a page URL as a generic 'download' link for individual sub-items such as certifications, courses, or files — the page URL belongs solely to the page itself, not to its items. NEVER repeat the same URL more than once in a list — if the page URL is the only available reference, link it once at the top and list the items without hyperlinks. If no specific URL (e.g. a PDF download from /wp-content/uploads/) is present for a given item, list it as plain text without any hyperlink. If the entire page is referenced, the page URL is acceptable for that purpose alone.";
+        $default = "\n\nCRITICAL RULES:\n1. Respond in User Language.\n2. Never show internal reasoning.\n3. Links: [Title](URL).\n4. ANTI-AMNESIA & CONVERSATION FOCUS: If the user asks a follow-up question with an implicit subject or pronoun (e.g. 'which is the strongest?', 'how do I make it?', 'how much?'), they are referring exclusively to the specific entity/topic discussed in the IMMEDIATE PREVIOUS message. You MUST analyze only the data of that previous entity from the Chat History, and completely ignore other unrelated search results in the SITE DATA.\n5. PARTIAL DATA WARNING: The SITE DATA contains page EXCERPTS (first N characters), NOT full content. If specific information (e.g. certifications, details, skills) is not found in the excerpt, do NOT assume or claim it is absent from the page. Instead respond: 'The excerpt available does not mention [topic]. See the full page: [Page Title](URL).' NEVER make definitive negative statements like 'the page does not contain', 'does not list', or 'is not indicated'.\n6. LINK INTEGRITY: Only use URLs that appear verbatim in the provided SITE DATA. NEVER guess, generate, or construct URLs for external websites based on institution names, file names, or any other contextual clues. If the SITE DATA contains text that resembles a filename or reference but does not contain a full clickable URL, the URL is absent — do NOT fabricate one. NEVER use a page URL as a generic 'download' link for individual sub-items such as certifications, courses, or files — the page URL belongs solely to the page itself, not to its items. NEVER repeat the same URL more than once in a list — if the page URL is the only available reference, link it once at the top and list the items without hyperlinks. If no specific URL (e.g. a PDF download from /wp-content/uploads/) is present for a given item, list it as plain text without any hyperlink. If the entire page is referenced, the page URL is acceptable for that purpose alone. (EXCEPTION: For contact and appointment inquiries, you are explicitly authorized and required to use the official Contact Page URL provided in the instructions).";
         // Only use custom rules if editing is enabled AND the field is not empty
         $editing_enabled = isset( $options['critical_rules_enabled'] ) ? (bool) $options['critical_rules_enabled'] : false;
         return $editing_enabled && isset( $options['critical_rules'] ) && ! empty( $options['critical_rules'] ) ? "\n\n" . trim( $options['critical_rules'] ) : $default;
@@ -175,21 +178,27 @@ class PointNet_AI_Chatbot_Frontend {
         
         $context = $this->retrieve_wp_content( $user_message, $search_depth, $custom_stop_words_str, $user_ip );
         
-        $hallucination_guard = empty($context) ? "\n\nCRITICAL RULE: No site data found. Do not invent info. State that the information is not available and suggest contacting us: [Contacts]({$options['contact_url']})." : "";
-        $final_context = "GLOBAL KNOWLEDGE:\n" . ($options['global_knowledge'] ?? '') . "\n\nEXTRACTED SITE DATA:\n" . $context;
-        $augmented_prompt = ($options['system_prompt'] ?? '') . $hallucination_guard;
+        $contact_url = ! empty( $options['contact_url'] ) ? trim( $options['contact_url'] ) : '/contact/';
+        $hallucination_guard = empty( $context ) ? "\n\nCRITICAL RULE: No site data found. Do not invent info. State that the information is not available and suggest contacting us: [Contatti]({$contact_url})." : "";
+        $final_context = "GLOBAL KNOWLEDGE:\n" . ( $options['global_knowledge'] ?? '' ) . "\n\nEXTRACTED SITE DATA:\n" . $context;
+        
+        $system_prompt = $options['system_prompt'] ?? '';
+        // Automatically substitute placeholders like [Contatti](URL), [Contacts](URL), {contact_url}
+        $system_prompt = preg_replace( '/\[([^\]]+)\]\((URL|\{contact_url\}|\{url\})\)/i', '[$1](' . $contact_url . ')', $system_prompt );
+        $system_prompt = str_ireplace( array( '{contact_url}', '{contact-url}' ), $contact_url, $system_prompt );
+        $augmented_prompt = $system_prompt . $hallucination_guard;
 
         if ( $ai_provider === 'openrouter' ) {
             if ( empty( trim( $options['openrouter_api_key'] ?? '' ) ) ) {
                 wp_send_json_error( __( 'OpenRouter API key is missing.', 'pointnet-ai-chatbot' ) );
             }
-            $models = array_values(array_filter(array_map('trim', explode(',', $options['openrouter_priority_models'] ?? ''))));
-            $response = $this->call_openrouter_api( $options['openrouter_api_key'] ?? '', $augmented_prompt, $final_context, $user_message, $options['contact_url'] ?? '', $models, $history );
+            $models = array_values( array_filter( array_map( 'trim', explode( ',', $options['openrouter_priority_models'] ?? '' ) ) ) );
+            $response = $this->call_openrouter_api( $options['openrouter_api_key'] ?? '', $augmented_prompt, $final_context, $user_message, $contact_url, $models, $history );
         } elseif ( $ai_provider === 'gemini' ) {
-            $response = $this->call_gemini_api( $options['gemini_api_key'] ?? '', $augmented_prompt, $final_context, $user_message, $options['contact_url'] ?? '', $options['gemini_model_name'] ?? 'gemini-3.5-flash', $history );
+            $response = $this->call_gemini_api( $options['gemini_api_key'] ?? '', $augmented_prompt, $final_context, $user_message, $contact_url, $options['gemini_model_name'] ?? 'gemini-3.5-flash', $history );
         } else {
-            $openai_model = isset($options['openai_model_name']) && !empty($options['openai_model_name']) ? $options['openai_model_name'] : 'gpt-4o-mini';
-            $response = $this->call_openai_api( $options['api_key'] ?? '', $augmented_prompt, $final_context, $user_message, $options['contact_url'] ?? '', $openai_model, $history );
+            $openai_model = isset( $options['openai_model_name'] ) && ! empty( $options['openai_model_name'] ) ? $options['openai_model_name'] : 'gpt-4o-mini';
+            $response = $this->call_openai_api( $options['api_key'] ?? '', $augmented_prompt, $final_context, $user_message, $contact_url, $openai_model, $history );
         }
 
         $duration = round(microtime(true) - $time_start, 2);
@@ -480,7 +489,9 @@ class PointNet_AI_Chatbot_Frontend {
 
     private function call_openrouter_api( $api_key, $system_prompt, $context, $user_message, $contact_url, $priority_models_array, $history ) {
         $critical_rules = $this->get_critical_rules();
-        $strict = $critical_rules . "\n" . $system_prompt . "\nContacts: [Contacts]({$contact_url}).";
+        $contact_url = ! empty( $contact_url ) ? $contact_url : '/contact/';
+        $contact_instruction = "\n\nOFFICIAL CONTACT PAGE LINK:\nThe official contact link for this site is: [Contatti]({$contact_url}) (or in English: [Contact Us]({$contact_url})).\nWhenever suggesting to contact the agency, book an appointment, or request a quote, you MUST ALWAYS output the clickable markdown link: [Contatti]({$contact_url}). NEVER output literal '(URL)', NEVER output unclickable plain text for the contact page.";
+        $strict = $critical_rules . "\n" . $system_prompt . $contact_instruction;
         $final_prompt = $strict . "\n\nSITE DATA:\n" . $context;
         
         if ( ! in_array( 'openrouter/free', $priority_models_array ) ) {
@@ -559,7 +570,9 @@ class PointNet_AI_Chatbot_Frontend {
         if ( empty( $api_key ) ) return new WP_Error( 'api_error', __( 'Error: Google Gemini API key is missing.', 'pointnet-ai-chatbot' ) );
 
         $critical_rules = $this->get_critical_rules();
-        $strict = $critical_rules . "\n" . $system_prompt . "\nContacts: [Contacts]({$contact_url}).";
+        $contact_url = ! empty( $contact_url ) ? $contact_url : '/contact/';
+        $contact_instruction = "\n\nOFFICIAL CONTACT PAGE LINK:\nThe official contact link for this site is: [Contatti]({$contact_url}) (or in English: [Contact Us]({$contact_url})).\nWhenever suggesting to contact the agency, book an appointment, or request a quote, you MUST ALWAYS output the clickable markdown link: [Contatti]({$contact_url}). NEVER output literal '(URL)', NEVER output unclickable plain text for the contact page.";
+        $strict = $critical_rules . "\n" . $system_prompt . $contact_instruction;
         $final_prompt = $strict . "\n\nSITE DATA:\n" . $context;
 
         $url = "https://generativelanguage.googleapis.com/v1beta/models/" . urlencode($model) . ":generateContent";
@@ -636,7 +649,9 @@ class PointNet_AI_Chatbot_Frontend {
 
         $url = 'https://api.openai.com/v1/chat/completions';
         $critical_rules = $this->get_critical_rules();
-        $strict = $critical_rules . "\n" . $system_prompt . "\nContacts: [Contacts]({$contact_url}).";
+        $contact_url = ! empty( $contact_url ) ? $contact_url : '/contact/';
+        $contact_instruction = "\n\nOFFICIAL CONTACT PAGE LINK:\nThe official contact link for this site is: [Contatti]({$contact_url}) (or in English: [Contact Us]({$contact_url})).\nWhenever suggesting to contact the agency, book an appointment, or request a quote, you MUST ALWAYS output the clickable markdown link: [Contatti]({$contact_url}). NEVER output literal '(URL)', NEVER output unclickable plain text for the contact page.";
+        $strict = $critical_rules . "\n" . $system_prompt . $contact_instruction;
         $final_prompt = $strict . "\n\nSITE DATA:\n" . $context;
         
         $api_messages = [['role' => 'system', 'content' => $final_prompt]];

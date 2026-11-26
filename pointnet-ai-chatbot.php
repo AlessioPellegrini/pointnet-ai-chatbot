@@ -4,7 +4,7 @@ declare( strict_types=1 );
  * Plugin Name: PointNet AI Chatbot – Virtual Assistant
  * Plugin URI:  https://www.pointnet.it/pointnet-ai-chatbot/
  * Description: AI-powered virtual assistant that responds to users using your WordPress site content.
- * Version:     1.8.4
+ * Version:     1.8.5
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * Author:      PointNet
@@ -13,13 +13,15 @@ declare( strict_types=1 );
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: pointnet-ai-chatbot
  * Domain Path: /languages
+ * Update URI:  https://github.com/AlessioPellegrini/pointnet-ai-chatbot
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'PN_AI_CHATBOT_VERSION', '1.8.4' );
+define( 'PN_AI_CHATBOT_VERSION', '1.8.5' );
+define( 'PN_AI_CHATBOT_FILE', __FILE__ );
 define( 'PN_AI_CHATBOT_DIR', plugin_dir_path( __FILE__ ) );
 define( 'PN_AI_CHATBOT_URL', plugin_dir_url( __FILE__ ) );
 
@@ -125,6 +127,12 @@ function pn_ai_chatbot_init(): void {
         new PointNet_AI_Chatbot_Admin_Settings();
     }
     
+    // GitHub Release Updater (remove before WordPress.org submission).
+    if ( file_exists( PN_AI_CHATBOT_DIR . 'includes/class-updater.php' ) && ( ! defined( 'PN_AI_CHATBOT_IS_WPORG' ) || ! PN_AI_CHATBOT_IS_WPORG ) ) {
+        require_once PN_AI_CHATBOT_DIR . 'includes/class-updater.php';
+        PointNet_AI_Chatbot_Updater::init();
+    }
+
     require_once PN_AI_CHATBOT_DIR . 'frontend/chat-handler.php';
     new PointNet_AI_Chatbot_Frontend();
 }

@@ -4,7 +4,7 @@ Tags: chatbot, ai, virtual assistant, gemini, openai
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.8.4
+Stable tag: 1.8.5
 License: GPLv2 or later
 
 AI-powered virtual assistant using RAG to answer user queries with your WordPress site content. Secure, lightweight, multi-provider.
@@ -110,6 +110,12 @@ No. We integrated `sessionStorage` technology. The conversation remains intact a
 * Ideal for sites with 1,000+ pages requiring synonym-aware semantic search.
 
 == Changelog ==
+
+= 1.8.5 – GitHub Auto-Updater & Contact Link Resolution =
+* FEATURE: Native GitHub Release Updater (`includes/class-updater.php`). Allows administrators to receive automatic update notifications and update the plugin directly from the WordPress admin dashboard via GitHub Releases without FTP.
+* FIX: Automatic Contact Link Resolution. Solved issue where `[Contatti](URL)` or unclickable contact mentions appeared in chat. The backend now automatically resolves placeholder URLs (such as `(URL)` or `{contact_url}`) with the configured Contact Page URL prior to prompt execution.
+* FIX: Explicit AI Contact Instructions & Rule 6 Exception. Added explicit system instructions across all AI providers (OpenRouter, Google Gemini, OpenAI) and an exception to Rule 6 (Link Integrity) ensuring the AI always outputs clickable markdown links pointing to the official contact page.
+* FIX: Frontend Markdown Fallback. Enhanced `frontend/chat.js` regex parser so that even if the AI model outputs `[Contatti](URL)` literally, the client-side parser automatically substitutes the official localized contact URL, guaranteeing clickable links for visitors.
 
 = 1.8.4 – Security Hardening & WordPress.org Quality Compliance =
 * SECURITY: Hardened Markdown link formatting in `chat.js` against DOM XSS and attribute breakout; strictly enforced http/https and relative schemes with `rel="noopener noreferrer"`.

@@ -71,8 +71,11 @@ jQuery(document).ready(function($) {
         if (!text) return "";
         let safe = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
                        .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
-        safe = safe.replace(/\[([^\]]+)\]\(([^)]+)\)/g, function(match, label, url) {
+        safe = safe.replace(/\[([^\]]+)\]\(([^)]*)\)/g, function(match, label, url) {
             let cleanUrl = url.trim();
+            if (!cleanUrl || cleanUrl.toLowerCase() === 'url' || cleanUrl.toLowerCase() === '{contact_url}' || cleanUrl.toLowerCase() === '{url}') {
+                cleanUrl = (typeof pnAiChatbotData !== 'undefined' && pnAiChatbotData.contact_url) ? pnAiChatbotData.contact_url : '/contact/';
+            }
             if (/^(https?:\/\/|\/(?!\/))/i.test(cleanUrl)) {
                 let sanitizedUrl = cleanUrl.replace(/"/g, "%22").replace(/'/g, "%27").replace(/\s/g, "%20");
                 return '<a href="' + sanitizedUrl + '" target="_self" rel="noopener noreferrer" style="color: var(--pn-ai-chatbot-primary-solid, #0073aa); text-decoration: underline; font-weight: bold;">' + label + '</a>';
