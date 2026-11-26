@@ -26,7 +26,10 @@ class PointNet_AI_Chatbot_Frontend {
         wp_enqueue_style( 'pn-ai-chatbot-css', PN_AI_CHATBOT_URL . 'frontend/chat.css', array(), $css_ver );
         wp_enqueue_script( 'pn-ai-chatbot-js', PN_AI_CHATBOT_URL . 'frontend/chat.js', array( 'jquery' ), $js_ver, true );
         $options     = get_option( 'pn_ai_chatbot_settings' );
-        $contact_url = is_array( $options ) && ! empty( $options['contact_url'] ) ? $options['contact_url'] : '/contact/';
+        $contact_url = is_array( $options ) && ! empty( $options['contact_url'] ) ? trim( $options['contact_url'] ) : '/contact/';
+        if ( ! preg_match( '#^(https?://|/)#i', $contact_url ) ) {
+            $contact_url = '/' . $contact_url;
+        }
         wp_localize_script( 'pn-ai-chatbot-js', 'pnAiChatbotData', array(
             'ajax_url'     => admin_url( 'admin-ajax.php' ),
             'nonce'        => wp_create_nonce( 'pn_ai_chatbot_chat_nonce' ),
@@ -179,6 +182,9 @@ class PointNet_AI_Chatbot_Frontend {
         $context = $this->retrieve_wp_content( $user_message, $search_depth, $custom_stop_words_str, $user_ip );
         
         $contact_url = ! empty( $options['contact_url'] ) ? trim( $options['contact_url'] ) : '/contact/';
+        if ( ! preg_match( '#^(https?://|/)#i', $contact_url ) ) {
+            $contact_url = '/' . $contact_url;
+        }
         $hallucination_guard = empty( $context ) ? "\n\nCRITICAL RULE: No site data found. Do not invent info. State that the information is not available and suggest contacting us: [Contatti]({$contact_url})." : "";
         $final_context = "GLOBAL KNOWLEDGE:\n" . ( $options['global_knowledge'] ?? '' ) . "\n\nEXTRACTED SITE DATA:\n" . $context;
         
@@ -489,7 +495,10 @@ class PointNet_AI_Chatbot_Frontend {
 
     private function call_openrouter_api( $api_key, $system_prompt, $context, $user_message, $contact_url, $priority_models_array, $history ) {
         $critical_rules = $this->get_critical_rules();
-        $contact_url = ! empty( $contact_url ) ? $contact_url : '/contact/';
+        $contact_url = ! empty( $contact_url ) ? trim( $contact_url ) : '/contact/';
+        if ( ! preg_match( '#^(https?://|/)#i', $contact_url ) ) {
+            $contact_url = '/' . $contact_url;
+        }
         $contact_instruction = "\n\nOFFICIAL CONTACT PAGE LINK:\nThe official contact link for this site is: [Contatti]({$contact_url}) (or in English: [Contact Us]({$contact_url})).\nWhenever suggesting to contact the agency, book an appointment, or request a quote, you MUST ALWAYS output the clickable markdown link: [Contatti]({$contact_url}). NEVER output literal '(URL)', NEVER output unclickable plain text for the contact page.";
         $strict = $critical_rules . "\n" . $system_prompt . $contact_instruction;
         $final_prompt = $strict . "\n\nSITE DATA:\n" . $context;
@@ -570,7 +579,10 @@ class PointNet_AI_Chatbot_Frontend {
         if ( empty( $api_key ) ) return new WP_Error( 'api_error', __( 'Error: Google Gemini API key is missing.', 'pointnet-ai-chatbot' ) );
 
         $critical_rules = $this->get_critical_rules();
-        $contact_url = ! empty( $contact_url ) ? $contact_url : '/contact/';
+        $contact_url = ! empty( $contact_url ) ? trim( $contact_url ) : '/contact/';
+        if ( ! preg_match( '#^(https?://|/)#i', $contact_url ) ) {
+            $contact_url = '/' . $contact_url;
+        }
         $contact_instruction = "\n\nOFFICIAL CONTACT PAGE LINK:\nThe official contact link for this site is: [Contatti]({$contact_url}) (or in English: [Contact Us]({$contact_url})).\nWhenever suggesting to contact the agency, book an appointment, or request a quote, you MUST ALWAYS output the clickable markdown link: [Contatti]({$contact_url}). NEVER output literal '(URL)', NEVER output unclickable plain text for the contact page.";
         $strict = $critical_rules . "\n" . $system_prompt . $contact_instruction;
         $final_prompt = $strict . "\n\nSITE DATA:\n" . $context;
@@ -649,7 +661,10 @@ class PointNet_AI_Chatbot_Frontend {
 
         $url = 'https://api.openai.com/v1/chat/completions';
         $critical_rules = $this->get_critical_rules();
-        $contact_url = ! empty( $contact_url ) ? $contact_url : '/contact/';
+        $contact_url = ! empty( $contact_url ) ? trim( $contact_url ) : '/contact/';
+        if ( ! preg_match( '#^(https?://|/)#i', $contact_url ) ) {
+            $contact_url = '/' . $contact_url;
+        }
         $contact_instruction = "\n\nOFFICIAL CONTACT PAGE LINK:\nThe official contact link for this site is: [Contatti]({$contact_url}) (or in English: [Contact Us]({$contact_url})).\nWhenever suggesting to contact the agency, book an appointment, or request a quote, you MUST ALWAYS output the clickable markdown link: [Contatti]({$contact_url}). NEVER output literal '(URL)', NEVER output unclickable plain text for the contact page.";
         $strict = $critical_rules . "\n" . $system_prompt . $contact_instruction;
         $final_prompt = $strict . "\n\nSITE DATA:\n" . $context;

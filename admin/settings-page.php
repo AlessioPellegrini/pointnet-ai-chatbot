@@ -153,7 +153,15 @@ class PointNet_AI_Chatbot_Admin_Settings {
         if ( $sanitized['button_opacity'] < 10 ) $sanitized['button_opacity'] = 10;
         if ( $sanitized['button_opacity'] > 100 ) $sanitized['button_opacity'] = 100;
 
-        $sanitized['contact_url'] = isset( $input['contact_url'] ) ? sanitize_text_field( $input['contact_url'] ) : '/contact/';
+        if ( ! empty( $input['contact_url'] ) ) {
+            $raw_contact_url = trim( sanitize_text_field( $input['contact_url'] ) );
+            if ( ! preg_match( '#^(https?://|/)#i', $raw_contact_url ) ) {
+                $raw_contact_url = '/' . $raw_contact_url;
+            }
+            $sanitized['contact_url'] = $raw_contact_url;
+        } else {
+            $sanitized['contact_url'] = '/contact/';
+        }
         $sanitized['global_knowledge'] = isset( $input['global_knowledge'] ) ? sanitize_textarea_field( $input['global_knowledge'] ) : '';
         $sanitized['system_prompt'] = isset( $input['system_prompt'] ) ? sanitize_textarea_field( $input['system_prompt'] ) : '';
 

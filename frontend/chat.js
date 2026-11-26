@@ -76,7 +76,12 @@ jQuery(document).ready(function($) {
             if (!cleanUrl || cleanUrl.toLowerCase() === 'url' || cleanUrl.toLowerCase() === '{contact_url}' || cleanUrl.toLowerCase() === '{url}') {
                 cleanUrl = (typeof pnAiChatbotData !== 'undefined' && pnAiChatbotData.contact_url) ? pnAiChatbotData.contact_url : '/contact/';
             }
-            if (/^(https?:\/\/|\/(?!\/))/i.test(cleanUrl)) {
+            // If relative slug or path without leading slash (e.g. "contatta-la-web-agency-pointnet/"),
+            // ensure it starts with / as long as it is not an external protocol or protocol-relative URL.
+            if (!/^(https?:\/\/|\/|#|mailto:|tel:)/i.test(cleanUrl) && !/^[a-z0-9+.-]+:/i.test(cleanUrl) && !cleanUrl.startsWith('//')) {
+                cleanUrl = '/' + cleanUrl;
+            }
+            if (/^(https?:\/\/|\/(?!\/)|#|mailto:[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}|tel:[+0-9\s()-]+)/i.test(cleanUrl)) {
                 let sanitizedUrl = cleanUrl.replace(/"/g, "%22").replace(/'/g, "%27").replace(/\s/g, "%20");
                 return '<a href="' + sanitizedUrl + '" target="_self" rel="noopener noreferrer" style="color: var(--pn-ai-chatbot-primary-solid, #0073aa); text-decoration: underline; font-weight: bold;">' + label + '</a>';
             }
